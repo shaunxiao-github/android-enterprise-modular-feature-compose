@@ -1,0 +1,4 @@
+<resources>
+    <string name="payments_title">Payments</string>
+    <string name="payments_message">Pay bills and manage transfers</string>
+</resources>
