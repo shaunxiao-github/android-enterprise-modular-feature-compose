@@ -51,17 +51,17 @@ This project demonstrates how to build a **server-driven, modular Android app** 
 
 app/
 core/
-  ├─ common        // Rx utilities, disposable helpers
-  ├─ network       // Retrofit / OkHttp / Moshi
-  ├─ config        // Server config API + repository
-  ├─ navigation    // FeatureEntry + FeatureRegistry
-  ├─ ui            // Compose theme + shared components
+├── common        // Rx utilities, disposable helpers
+├── network       // Retrofit / OkHttp / Moshi
+├── config        // Server config API + repository
+├── navigation    // FeatureEntry + FeatureRegistry
+├── ui            // Compose theme + shared components
 features/
-  ├─ bundle        // Aggregates feature implementations
+├── bundle        // Aggregates feature implementations
 feature/
-  ├─ payments/
-  │   ├─ api       // Feature ID + constants
-  │   └─ impl      // UI + Activity + FeatureEntry
+└── payments/
+  │   ├── api       // Feature ID + constants
+  │   └── impl      // UI + Activity + FeatureEntry
   └─ profile/
       ├─ api
       └─ impl
