@@ -50,6 +50,7 @@ This project demonstrates how to build a **server-driven, modular Android app** 
 ## 🗂 Module Structure
 
 app/
+│
 core/
 ├── common        
 ├── network       
