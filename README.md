@@ -176,4 +176,4 @@ No changes to Home screen are required.
 
 ## 📜 License
 
-MIT (or your preferred license)
+MIT 
