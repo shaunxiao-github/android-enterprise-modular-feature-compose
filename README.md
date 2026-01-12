@@ -49,24 +49,33 @@ This project demonstrates how to build a **server-driven, modular Android app** 
 
 ## 🗂 Module Structure
 
+```text
 app/
+├─ src/
+│  ├─ main/            # Login + Home (Compose UI)
+│  ├─ mock/            # MockWebServer setup
+│  ├─ qa/              # QA-specific wiring
+│  └─ prod/            # Production wiring
 │
 core/
-├── common        
-├── network       
-├── config        
-├── navigation    
-├── ui            
+├─ common              # Rx utilities, disposable helpers
+├─ network             # Retrofit / OkHttp / Moshi
+├─ config              # Server config API + repository
+├─ navigation          # FeatureEntry + FeatureRegistry
+└─ ui                  # Compose theme + shared UI components
+│
 features/
-├── bundle        
+└─ bundle               # Aggregates feature implementations
+│
 feature/
-└── payments/
-  │   ├── api       
-  │   └── impl      
-  └─ profile/
-      ├─ api
-      └─ impl
-
+├─ payments/
+│  ├─ api              # Feature ID + public constants
+│  └─ impl             # Activity, Compose UI, FeatureEntry
+│
+└─ profile/
+   ├─ api
+   └─ impl
+```
 ---
 
 ## 🔌 How Decoupling Works
