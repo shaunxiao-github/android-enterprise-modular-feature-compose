@@ -80,9 +80,11 @@ dependencies {
     implementation(libs.rxandroid)
 
     implementation(libs.mockwebserver)
-    implementation(libs.retrofit)
 
     debugImplementation(libs.androidx.compose.ui.tooling)
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.adapter.rxjava2)
+    implementation(libs.retrofit.converter.moshi)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.junit)

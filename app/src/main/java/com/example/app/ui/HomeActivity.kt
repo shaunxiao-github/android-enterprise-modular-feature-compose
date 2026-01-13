@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -59,7 +60,11 @@ class HomeActivity : ComponentActivity() {
                     onRowClick = { featureId ->
                         val entry = FeatureRegistry.get(featureId)
                         if (entry == null) {
-                            Toast.makeText(this, "Feature not found: $featureId", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(
+                                this,
+                                "Feature not found: $featureId",
+                                Toast.LENGTH_SHORT
+                            ).show()
                             return@HomeScreen
                         }
                         startActivity(entry.intent(this))
@@ -80,11 +85,20 @@ private fun HomeScreen(
         topBar = { TopAppBar(title = { Text("Home") }) }
     ) { padding ->
         when (state) {
-            HomeUiState.Loading -> Text("Loading…", modifier = Modifier.padding(padding).padding(16.dp))
+            HomeUiState.Loading -> Text(
+                "Loading…",
+                modifier = Modifier
+                    .padding(padding)
+                    .padding(16.dp)
+            )
+
             is HomeUiState.Error -> Text(
                 "Failed: ${state.message}",
-                modifier = Modifier.padding(padding).padding(16.dp)
+                modifier = Modifier
+                    .padding(padding)
+                    .padding(16.dp)
             )
+
             is HomeUiState.Content -> {
                 LazyColumn(
                     modifier = Modifier
@@ -104,9 +118,12 @@ private fun HomeScreen(
 
 @Composable
 private fun HomeRowCard(row: HomeRow, onClick: () -> Unit) {
-    Card(onClick = onClick) {
+    Card(onClick = onClick,
+        modifier = Modifier.fillMaxWidth() ) {
         Row(
-            modifier = Modifier.padding(12.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(12.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Image(

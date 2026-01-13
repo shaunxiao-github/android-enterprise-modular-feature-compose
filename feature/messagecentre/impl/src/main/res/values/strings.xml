@@ -1,0 +1,8 @@
+<resources>
+    <string name="mc_title">Message Centre</string>
+    <string name="mc_message">View your messages</string>
+    <string name="mc_screen_title">Messages</string>
+    <string name="mc_detail_title">Message</string>
+    <string name="mc_delete">Delete</string>
+    <string name="mc_refresh">Refresh</string>
+</resources>
