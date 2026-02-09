@@ -4,7 +4,7 @@
  * Licensed under the MIT License.
  * See the LICENSE file in the project root for license information.
  */
- 
+
 package com.example.feature.messagecentre.impl
 
 import android.content.Intent
@@ -24,34 +24,31 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelProvider
-import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.Alignment
 import com.example.core.ui.EnterpriseTheme
 import com.example.feature.messagecentre.impl.ui.*
 import androidx.compose.ui.res.stringResource
 
 class MessageCentreListActivity : ComponentActivity() {
 
-    private lateinit var vm: McListViewModel
+    private val vm: McListViewModel by lazy {
+        val repo = MessageCentreGraph.repository(this)
+        ViewModelProvider(this, McListVmFactory(repo))[McListViewModel::class.java]
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val repo = MessageCentreGraph.repository(this)
-        vm = ViewModelProvider(this, McListVmFactory(repo))[McListViewModel::class.java]
         vm.start()
 
         setContent {
             EnterpriseTheme(darkTheme = isSystemInDarkTheme()) {
-                val state by vm.state.observeAsState(McListState.Loading)
-                val err by vm.transientError.observeAsState(null)
-
-                LaunchedEffect(err) {
-                    // no-op; handled by snackbar host
-                }
+                val state by vm.state.collectAsState()
+                val transientError by vm.transientError.collectAsState()
 
                 MessageListScreen(
                     state = state,
-                    transientError = err,
+                    transientError = transientError,
                     onRefresh = { vm.refresh() },
                     onBack = { finish() },
                     onClick = { id ->
@@ -61,7 +58,8 @@ class MessageCentreListActivity : ComponentActivity() {
                                 MessageCentreDetailActivity::class.java
                             ).putExtra(EXTRA_ID, id)
                         )
-                    }
+                    },
+                    onTransientErrorConsumed = { vm.clearTransientError() }
                 )
             }
         }
@@ -79,13 +77,15 @@ private fun MessageListScreen(
     transientError: String?,
     onRefresh: () -> Unit,
     onBack: () -> Unit,
-    onClick: (String) -> Unit
+    onClick: (String) -> Unit,
+    onTransientErrorConsumed: () -> Unit
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
 
     LaunchedEffect(transientError) {
         if (!transientError.isNullOrBlank()) {
             snackbarHostState.showSnackbar(transientError)
+            onTransientErrorConsumed()
         }
     }
 
@@ -95,7 +95,10 @@ private fun MessageListScreen(
                 title = { Text(stringResource(R.string.mc_screen_title)) },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        Icon(
+                            Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = "Back"
+                        )
                     }
                 },
                 actions = {
@@ -110,14 +113,16 @@ private fun MessageListScreen(
         },
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
     ) { padding ->
-        Box(Modifier
-            .padding(padding)
-            .fillMaxSize()) {
+        Box(
+            Modifier
+                .padding(padding)
+                .fillMaxSize()
+        ) {
             when (state) {
                 McListState.Loading -> {
                     Box(
                         Modifier.fillMaxSize(),
-                        contentAlignment = androidx.compose.ui.Alignment.Center
+                        contentAlignment = Alignment.Center
                     ) {
                         CircularProgressIndicator()
                     }
